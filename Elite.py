@@ -8,6 +8,7 @@ from random import randint
 # change to the path you keep your wav files
 soundDir = 'L:\GlovePie2\Elite\%s.wav'
 
+
 # *********************************** 
 # MCI audio playback
 # *********************************** 
@@ -333,161 +334,181 @@ def sayAyAy():
 # rules
 # ***********************************
 def voiceCommands():
+    global listening
+    
     if speech.said("computer"):
         sayWhat()
-    elif speech.said("thank you"):
-        sayYoureWelcome()
-    elif speech.said("hello"):
-        wav("KICS_HelloCommander")
-    elif speech.said("can you hear me"):
-        wav("KICS_LoudAndClear")
+        listening = 1
+    if speech.said("stop listening"):
+        sayAyAy()
+        listening = 0
 
-    elif speech.said("faster") or speech.said("speed up"):
-        myShip.faster()
-    elif speech.said("slower") or speech.said("slow down"):
-        myShip.slower()
-    elif speech.said("full astern"):
-        myShip.astern100()
-    elif speech.said("astern"):
-        myShip.astern75()
-    elif speech.said("half astern"):
-        myShip.astern50()
-    elif speech.said("slow astern"):
-        myShip.astern25
-    elif speech.said("stop") or speech.said("engines off"):
-        myShip.stop()
-    elif speech.said("slow ahead") or speech.said("go"):
-        myShip.ahead25()
-    elif speech.said("half ahead"):
-        myShip.ahead50()
-    elif speech.said("ahead"):
-        myShip.ahdead75()
-    elif speech.said("full ahead"):
-        myShip.ahead100()
-    elif speech.said("boost") or speech.said("boosters"):
-        myShip.boost()
-    elif speech.said("prepare for super cruise"):
-        myShip.supercruise()
-    elif speech.said("prepare for hyperspace"):
-        myShip.hyperspace()
-    elif speech.said("jump now"):
-        myShip.toggleFrameShift()
-        wav("FlightMisc_EngagingFrameShiftDrive")
-    elif speech.said("disengage frameshift"):
-        myShip.toggleFrameShift()
-        wav("FlightMisc_Disengaging")
-    elif speech.said("target") or speech.said("target ahead"):
-        myShip.target()
-    elif speech.said("target next ship") or speech.said("next target"):
-        myShip.targetNext()
-    elif speech.said("target previous ship") or speech.said("previous target"):
-        myShip.targetPrevious()
-    elif speech.said("target threat") or speech.said("target hostile"):
-        myShip.targetHostile()
-    elif speech.said("target next threat") or speech.said("target next hostile"):
-        myShip.targetNextHostile()
-    elif speech.said("target previous threat") or speech.said("target previous hostile"):
-        myShip.targetPreviousHostile()
-    elif speech.said("target next system"):
-        myShip.targetNextSystem()
-    elif speech.said("target previous system"):
-        myShip.targetPreviousSystem()
-    elif speech.said("balance power"):
-        myShip.balancePower()
-    elif speech.said("step engines"):
-        myShip.stepEngines()
-    elif speech.said("step weapons"):
-        myShip.stepWeapons()
-    elif speech.said("step shields") or speech.said("step systems"):
-        myShip.stepShields()
-    elif speech.said("full power to engines"):
-        myShip.fullEngines()
-    elif speech.said("full power to weapons"):
-        myShip.fullWeapons()
-    elif speech.said("full power to shields") or speech.said("full power to systems"):
-        myShip.fullShields()
-    elif speech.said("zoom out") or speech.said("increase range"):
-        myShip.zoomOut()
-    elif speech.said("zoom in") or speech.said("decrease range"):
-        myShip.zoomIn()
-    elif speech.said("no zoom") or speech.said("maximum range"):
-        myShip.maxRange()
-    elif speech.said("full zoom") or speech.said("minimum range"):
-        myShip.minRange()
-    elif speech.said("galaxy map"):
-        myShip.galaxyMap()
-    elif speech.said("system map"):
-        myShip.systemMap()
+    if listening:
+        if speech.said("thank you"):
+            sayYoureWelcome()
+        elif speech.said("hello"):
+            wav("KICS_HelloCommander")
+        elif speech.said("can you hear me"):
+            wav("KICS_LoudAndClear")
 
-    elif speech.said("lights are off"):
-        myShip.lights = 0
-        sayAyAy()
-    elif speech.said("lights are on"):
-        myShip.lights = 1
-        sayAyAy()
-    elif speech.said("lights"):
-        myShip.toggleLights()
-    elif speech.said("lights on"):
-        myShip.setLights(1)
-    elif speech.said("lights off"):
-        myShip.setLights(0)
+        elif speech.said("faster") or speech.said("speed up"):
+            myShip.faster()
+        elif speech.said("slower") or speech.said("slow down"):
+            myShip.slower()
+        elif speech.said("full astern"):
+            myShip.astern100()
+        elif speech.said("astern"):
+            myShip.astern75()
+        elif speech.said("half astern"):
+            myShip.astern50()
+        elif speech.said("slow astern"):
+            myShip.astern25
+        elif speech.said("stop") or speech.said("engines off"):
+            myShip.stop()
+        elif speech.said("slow ahead") or speech.said("go"):
+            myShip.ahead25()
+        elif speech.said("half ahead"):
+            myShip.ahead50()
+        elif speech.said("ahead"):
+            myShip.ahdead75()
+        elif speech.said("full ahead"):
+            myShip.ahead100()
+        elif speech.said("boost") or speech.said("boosters"):
+            myShip.boost()
+        elif speech.said("prepare for super cruise"):
+            myShip.supercruise()
+        elif speech.said("prepare for hyperspace"):
+            myShip.hyperspace()
+        elif speech.said("jump now"):
+            myShip.toggleFrameShift()
+            wav("FlightMisc_EngagingFrameShiftDrive")
+        elif speech.said("disengage frameshift"):
+            myShip.toggleFrameShift()
+            wav("FlightMisc_Disengaging")
+        elif speech.said("target") or speech.said("target ahead"):
+            myShip.target()
+        elif speech.said("target next ship") or speech.said("next target"):
+            myShip.targetNext()
+        elif speech.said("target previous ship") or speech.said("previous target"):
+            myShip.targetPrevious()
+        elif speech.said("target threat") or speech.said("target hostile"):
+            myShip.targetHostile()
+        elif speech.said("target next threat") or speech.said("target next hostile"):
+            myShip.targetNextHostile()
+        elif speech.said("target previous threat") or speech.said("target previous hostile"):
+            myShip.targetPreviousHostile()
+        elif speech.said("target next system"):
+            myShip.targetNextSystem()
+        elif speech.said("target previous system"):
+            myShip.targetPreviousSystem()
+        elif speech.said("balance power"):
+            myShip.balancePower()
+        elif speech.said("step engines"):
+            myShip.stepEngines()
+        elif speech.said("step weapons"):
+            myShip.stepWeapons()
+        elif speech.said("step shields") or speech.said("step systems"):
+            myShip.stepShields()
+        elif speech.said("full power to engines"):
+            myShip.fullEngines()
+        elif speech.said("full power to weapons"):
+            myShip.fullWeapons()
+        elif speech.said("full power to shields") or speech.said("full power to systems"):
+            myShip.fullShields()
+        elif speech.said("zoom out") or speech.said("increase range"):
+            myShip.zoomOut()
+        elif speech.said("zoom in") or speech.said("decrease range"):
+            myShip.zoomIn()
+        elif speech.said("no zoom") or speech.said("maximum range"):
+            myShip.maxRange()
+        elif speech.said("full zoom") or speech.said("minimum range"):
+            myShip.minRange()
+        elif speech.said("galaxy map"):
+            myShip.galaxyMap()
+        elif speech.said("system map"):
+            myShip.systemMap()
 
-    elif speech.said("gear is down"):
-        myShip.gear = 1
-        sayAyAy()
-    elif speech.said("gear is up"):
-        myShip.gear = 0
-        sayAyAy()
-    elif speech.said("gear"):
-        myShip.toggleGear()
-    elif speech.said("gear down"):
-        myShip.setGear(1)
-    elif speech.said("gear up"):
-        myShip.setGear(0)
+        elif speech.said("lights are off"):
+            myShip.lights = 0
+            sayAyAy()
+        elif speech.said("lights are on"):
+            myShip.lights = 1
+            sayAyAy()
+        elif speech.said("lights"):
+            myShip.toggleLights()
+        elif speech.said("lights on"):
+            myShip.setLights(1)
+        elif speech.said("lights off"):
+            myShip.setLights(0)
 
-    elif speech.said("hard points are on"):
-        myShip.hardpoints = 1
-        sayAyAy()
-    elif speech.said("hard points are off"):
-        myShip.hardpoints = 0
-        sayAyAy()
-    elif speech.said("hard points"):
-        myShip.toggleHardpoints()
-    elif (speech.said("deploy hard points") or speech.said("attack mode")):
-        myShip.setHardpoints(1)
-    elif speech.said("hide hard points") or speech.said("retract hard points"):
-        myShip.setHardpoints(0)
+        elif speech.said("gear is down"):
+            myShip.gear = 1
+            sayAyAy()
+        elif speech.said("gear is up"):
+            myShip.gear = 0
+            sayAyAy()
+        elif speech.said("gear"):
+            myShip.toggleGear()
+        elif speech.said("gear down"):
+            myShip.setGear(1)
+        elif speech.said("gear up"):
+            myShip.setGear(0)
 
-    elif speech.said("weapons are selected"):
-        myShip.fireGroup = "weapons"
-        sayAyAy()
-    elif speech.said("scanners are selected"):
-        myShip.fireGroup = "scanners"
-        sayAyAy()
-    elif speech.said("switch to weapons"):
-        myShip.setFireGroup("weapons")
-    elif speech.said("switch to scanners"):
-        myShip.setFireGroup("scanners")
+        elif speech.said("hard points are on"):
+            myShip.hardpoints = 1
+            sayAyAy()
+        elif speech.said("hard points are off"):
+            myShip.hardpoints = 0
+            sayAyAy()
+        elif speech.said("hard points"):
+            myShip.toggleHardpoints()
+        elif (speech.said("deploy hard points") or speech.said("attack mode")):
+            myShip.setHardpoints(1)
+        elif speech.said("hide hard points") or speech.said("retract hard points"):
+            myShip.setHardpoints(0)
 
-    elif speech.said("scoop is open"):
-        myShip.scoop = 1
-        sayAyAy()
-    elif speech.said("scoop is closed"):
-        myShip.scoop = 0
-        sayAyAy()
-    elif speech.said("open scoop"):
-        myShip.setScoop(1)
-    elif speech.said("close scoop"):
-        myShip.setScoop(0)
+        elif speech.said("weapons are selected"):
+            myShip.fireGroup = "weapons"
+            sayAyAy()
+        elif speech.said("scanners are selected"):
+            myShip.fireGroup = "scanners"
+            sayAyAy()
+        elif speech.said("switch to weapons"):
+            myShip.setFireGroup("weapons")
+        elif speech.said("switch to scanners"):
+            myShip.setFireGroup("scanners")
 
-    elif speech.said("red alert"):
-        myShip.balancePower
-        myShip.stepShields
-        myShip.stepWeapons
-        myShip.setHardpoints(1)
-        myShip.setFireGroup("weapons")
-        myShip.targetHostile()
-        wav("Requests_AndShowThemThePain")
+        elif speech.said("scoop is open"):
+            myShip.scoop = 1
+            sayAyAy()
+        elif speech.said("scoop is closed"):
+            myShip.scoop = 0
+            sayAyAy()
+        elif speech.said("open scoop"):
+            myShip.setScoop(1)
+        elif speech.said("close scoop"):
+            myShip.setScoop(0)
+
+        elif speech.said("red alert"):
+            myShip.balancePower
+            myShip.stepShields
+            myShip.stepWeapons
+            myShip.setHardpoints(1)
+            myShip.setFireGroup("weapons")
+            myShip.targetHostile()
+            wav("Requests_AndShowThemThePain")
+
+
+def androidHeadTracking():
+    #Apply deadband filter to avoid drift
+    #And continousRotation filter to yaw axis to avoid jumps when passing tracker center
+    deadband = 0.01
+
+    x = filters.deadband(filters.delta(math.degrees(filters.continousRotation(android[0].googlePitch))), deadband)
+    y = filters.deadband(filters.delta(math.degrees(android[0].googleRoll)), deadband)
+
+    mouse.deltaX = x * 20
+    mouse.deltaY = y * 5
 
 
 # *********************************** 
@@ -496,6 +517,12 @@ def voiceCommands():
 if starting:
     diagnostics.debug("Start")
     myShip = Ship()
+
+    # if should start listening
+    listening = 1
+
+    # uncomment to enable Android head tracking
+    #android[0].update += androidHeadTracking
 
 # if(var.time < 0.5)
 #               playsound ("L:\GlovePie2\elite\KICS_GoodMorningCommander.wav") 
