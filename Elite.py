@@ -36,6 +36,7 @@ def wav(name):
 def wait(duration):
     clock = time.time()
     while time.time() < (clock + duration):
+        diagnostics.debug("wait")
         pass
 
 def KeyPress(key):
@@ -60,6 +61,7 @@ class Ship:
     fireGroup = "weapons"
     scoop = 0
     hardpoints = 0
+    panel = "none"
 
     def dump(self):
         diagnostics.debug("==============================")
@@ -68,6 +70,75 @@ class Ship:
         diagnostics.debug("fire %s" % self.fireGroup)
         diagnostics.debug("scoo %d" % self.scoop)
         diagnostics.debug("hard %d" % self.hardpoints)
+        diagnostics.debug("pane %s" % self.panel)
+
+    def leftPanel(self):
+        if(self.panel != "left"):
+            self.panel = "left"
+            KeyPress(Key.D1)
+            wait(1)
+        self.dump()
+
+    def bottomPanel(self):
+        if(self.panel != "bottom"):
+            self.panel = "bottom"
+            KeyPress(Key.D2)
+            wait(1)
+        self.dump()
+        
+    def rightPanel(self):
+        if(self.panel != "right"):
+            self.panel = "right"
+            KeyPress(Key.D3)
+            wait(1)
+        self.dump()
+        
+    def noPanel(self):
+        if(self.panel != "none"):
+            self.panel = "none"
+            KeyPress(Key.Backspace)
+            wait(1)
+        self.dump()
+        
+    def nextPanelTab(self):
+        if(self.panel != "none"):
+            KeyPress(Key.E)
+            wait(0.3)
+        
+    def prevPanelTab(self):
+        if(self.panel != "none"):
+            KeyPress(Key.Q)
+            wait(0.3)
+
+    def cursorLeft(self):
+        if(self.panel != "none"):
+            KeyPress(Key.A)
+            wait(0.3)
+
+    def cursorRight(self):
+        if(self.panel != "none"):
+            KeyPress(Key.D)
+            wait(0.3)
+
+    def cursorUp(self):
+        if(self.panel != "none"):
+            KeyPress(Key.W)
+            wait(0.3)
+
+    def cursorDown(self):
+        if(self.panel != "none"):
+            KeyPress(Key.S)
+            wait(0.3)
+
+    def panelEnter(self):
+        if(self.panel != "none"):
+            KeyPress(Key.Space)
+            wait(0.3)
+
+    def panelBack(self):
+        if(self.panel != "none"):
+            KeyPress(Key.Backspace)
+            wait(0.3)
 
     def toggleGear(self):
         if (self.gear == 0):
@@ -153,7 +224,7 @@ class Ship:
 
     def astern100(self):
         KeyPress(Key.NumberPad1)
-        wav("FlightThrottle_DecreasingVelocity")
+        wav("FlightThrottle_Negative100")
 
     def astern75(self):
         KeyPress(Key.NumberPad2)
@@ -219,11 +290,11 @@ class Ship:
         wav("Targeting_TargetingHighestThreat")
 
     def targetNextHostile(self):
-        KeyPress(Key.D8)
+        KeyPress(Key.D7)
         wav("Targeting_TargetingNextHostile")
 
     def targetPreviousHostile(self):
-        KeyPress(Key.Seven)
+        KeyPress(Key.D6)
         wav("Targeting_TargetingNextHostile")
 
     def targetNextSystem(self):
@@ -497,7 +568,20 @@ def voiceCommands():
             myShip.setFireGroup("weapons")
             myShip.targetHostile()
             wav("Requests_AndShowThemThePain")
+            
+        elif speech.said("request docking"):
+            myShip.leftPanel()
+            myShip.nextPanelTab()
+            myShip.nextPanelTab()
+            myShip.panelEnter()
+            myShip.cursorDown()
+            myShip.panelEnter()
+            myShip.prevPanelTab()
+            myShip.prevPanelTab()
+            myShip.noPanel()
 
+        elif speech.said("no panel"):
+            myShip.noPanel()
 
 def androidHeadTracking():
     #Apply deadband filter to avoid drift
