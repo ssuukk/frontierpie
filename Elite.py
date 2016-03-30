@@ -49,6 +49,9 @@ def KeyRepeat(key, times):
         KeyPress(key)
         wait(0.1)
 
+def said(what):
+    speech.said(what,0.7)
+
 # ***********************************
 # your ship
 # ***********************************
@@ -62,6 +65,7 @@ class Ship:
     scoop = 0
     hardpoints = 0
     panel = "none"
+    silentrun = 0
 
     def dump(self):
         diagnostics.debug("==============================")
@@ -71,6 +75,24 @@ class Ship:
         diagnostics.debug("scoo %d" % self.scoop)
         diagnostics.debug("hard %d" % self.hardpoints)
         diagnostics.debug("pane %s" % self.panel)
+        diagnostics.debug("sile %d" % self.silentrun)
+
+
+    def toggleSilentRunning(self):
+        if (self.silentrun == 0):
+            self.setSilentRunning(1)
+        else:
+            self.setSilentRunning(0)
+
+    def setSilentRunning(self, state):
+        if (self.silentrun != state):
+            KeyPress(Key.Delete)
+            if (state == 1):
+                wav("Cooling_SilentRunning")
+            else:
+                wav("Cooling_RestoringHeatSignature")
+            self.silentrun = state
+        self.dump()
 
     def leftPanel(self):
         if(self.panel != "left"):
@@ -78,6 +100,34 @@ class Ship:
             KeyPress(Key.D1)
             wait(1)
         self.dump()
+
+    def deployHeatSink(self):
+        KeyPress(Key.O)
+        wav("Cooling_HeatsinkDeployed")
+
+    def targetWingman1(self):
+        KeyPress(Key.D7)
+        wav("Targeting_Wingman1")
+
+
+    def targetWingman2(self):
+        KeyPress(Key.D8)
+        wav("Targeting_Wingman2")
+
+
+    def targetWingman3(self):
+        KeyPress(Key.D9)
+        wav("Targeting_Wingman3")
+
+
+    def targetWingmanTarget(self):
+        KeyPress(Key.D0)
+        wav("Targeting_WingmansTarget")
+
+
+    def engageWingmanNavLock(self):
+        KeyPress(Key.Minus)
+        wav("Targeting_WingmanNavLockEngaging")
 
     def bottomPanel(self):
         if(self.panel != "bottom"):
@@ -407,160 +457,160 @@ def sayAyAy():
 def voiceCommands():
     global listening
     
-    if speech.said("computer"):
+    if said("computer"):
         sayWhat()
         listening = 1
-    if speech.said("stop listening"):
+    if said("stop listening"):
         sayAyAy()
         listening = 0
 
     if listening:
-        if speech.said("thank you"):
+        if said("thank you"):
             sayYoureWelcome()
-        elif speech.said("hello"):
+        elif said("hello"):
             wav("KICS_HelloCommander")
-        elif speech.said("can you hear me"):
+        elif said("can you hear me"):
             wav("KICS_LoudAndClear")
 
-        elif speech.said("faster") or speech.said("speed up"):
+        elif said("faster") or said("speed up"):
             myShip.faster()
-        elif speech.said("slower") or speech.said("slow down"):
+        elif said("slower") or said("slow down"):
             myShip.slower()
-        elif speech.said("full astern"):
+        elif said("full astern"):
             myShip.astern100()
-        elif speech.said("astern"):
+        elif said("astern"):
             myShip.astern75()
-        elif speech.said("half astern"):
+        elif said("half astern"):
             myShip.astern50()
-        elif speech.said("slow astern"):
+        elif said("slow astern"):
             myShip.astern25
-        elif speech.said("stop") or speech.said("engines off"):
+        elif said("stop") or said("engines off"):
             myShip.stop()
-        elif speech.said("slow ahead") or speech.said("go"):
+        elif said("slow ahead"):
             myShip.ahead25()
-        elif speech.said("half ahead"):
+        elif said("half ahead"):
             myShip.ahead50()
-        elif speech.said("ahead"):
+        elif said("ahead"):
             myShip.ahdead75()
-        elif speech.said("full ahead"):
+        elif said("full ahead"):
             myShip.ahead100()
-        elif speech.said("boost") or speech.said("boosters"):
+        elif said("boost") or said("boosters"):
             myShip.boost()
-        elif speech.said("prepare for super cruise"):
+        elif said("prepare for super cruise"):
             myShip.supercruise()
-        elif speech.said("prepare for hyperspace"):
+        elif said("prepare for hyperspace"):
             myShip.hyperspace()
-        elif speech.said("jump now"):
+        elif said("jump now"):
             myShip.toggleFrameShift()
             wav("FlightMisc_EngagingFrameShiftDrive")
-        elif speech.said("disengage frameshift"):
+        elif said("disengage frameshift"):
             myShip.toggleFrameShift()
             wav("FlightMisc_Disengaging")
-        elif speech.said("target") or speech.said("target ahead"):
+        elif said("target") or said("target ahead"):
             myShip.target()
-        elif speech.said("target next ship") or speech.said("next target"):
+        elif said("target next ship") or said("next target"):
             myShip.targetNext()
-        elif speech.said("target previous ship") or speech.said("previous target"):
+        elif said("target previous ship") or said("previous target"):
             myShip.targetPrevious()
-        elif speech.said("target threat") or speech.said("target hostile"):
+        elif said("target threat") or said("target hostile"):
             myShip.targetHostile()
-        elif speech.said("target next threat") or speech.said("target next hostile"):
+        elif said("target next threat") or said("target next hostile"):
             myShip.targetNextHostile()
-        elif speech.said("target previous threat") or speech.said("target previous hostile"):
+        elif said("target previous threat") or said("target previous hostile"):
             myShip.targetPreviousHostile()
-        elif speech.said("target next system"):
+        elif said("target next system"):
             myShip.targetNextSystem()
-        elif speech.said("target previous system"):
+        elif said("target previous system"):
             myShip.targetPreviousSystem()
-        elif speech.said("balance power"):
+        elif said("balance power"):
             myShip.balancePower()
-        elif speech.said("step engines"):
+        elif said("step engines"):
             myShip.stepEngines()
-        elif speech.said("step weapons"):
+        elif said("step weapons"):
             myShip.stepWeapons()
-        elif speech.said("step shields") or speech.said("step systems"):
+        elif said("step shields") or said("step systems"):
             myShip.stepShields()
-        elif speech.said("full power to engines"):
+        elif said("full power to engines"):
             myShip.fullEngines()
-        elif speech.said("full power to weapons"):
+        elif said("full power to weapons"):
             myShip.fullWeapons()
-        elif speech.said("full power to shields") or speech.said("full power to systems"):
+        elif said("full power to shields") or said("full power to systems"):
             myShip.fullShields()
-        elif speech.said("zoom out") or speech.said("increase range"):
+        elif said("zoom out") or said("increase range"):
             myShip.zoomOut()
-        elif speech.said("zoom in") or speech.said("decrease range"):
+        elif said("zoom in") or said("decrease range"):
             myShip.zoomIn()
-        elif speech.said("no zoom") or speech.said("maximum range"):
+        elif said("no zoom") or said("maximum range"):
             myShip.maxRange()
-        elif speech.said("full zoom") or speech.said("minimum range"):
+        elif said("full zoom") or said("minimum range"):
             myShip.minRange()
-        elif speech.said("galaxy map"):
+        elif said("galaxy map"):
             myShip.galaxyMap()
-        elif speech.said("system map"):
+        elif said("system map"):
             myShip.systemMap()
 
-        elif speech.said("lights are off"):
+        elif said("lights are off"):
             myShip.lights = 0
             sayAyAy()
-        elif speech.said("lights are on"):
+        elif said("lights are on"):
             myShip.lights = 1
             sayAyAy()
-        elif speech.said("lights"):
+        elif said("lights"):
             myShip.toggleLights()
-        elif speech.said("lights on"):
+        elif said("lights on"):
             myShip.setLights(1)
-        elif speech.said("lights off"):
+        elif said("lights off"):
             myShip.setLights(0)
 
-        elif speech.said("gear is down"):
+        elif said("gear is down"):
             myShip.gear = 1
             sayAyAy()
-        elif speech.said("gear is up"):
+        elif said("gear is up"):
             myShip.gear = 0
             sayAyAy()
-        elif speech.said("gear"):
+        elif said("gear"):
             myShip.toggleGear()
-        elif speech.said("gear down"):
+        elif said("gear down"):
             myShip.setGear(1)
-        elif speech.said("gear up"):
+        elif said("gear up"):
             myShip.setGear(0)
 
-        elif speech.said("hard points are on"):
+        elif said("hard points are on"):
             myShip.hardpoints = 1
             sayAyAy()
-        elif speech.said("hard points are off"):
+        elif said("hard points are off"):
             myShip.hardpoints = 0
             sayAyAy()
-        elif speech.said("hard points"):
+        elif said("hard points"):
             myShip.toggleHardpoints()
-        elif (speech.said("deploy hard points") or speech.said("attack mode")):
+        elif (said("deploy hard points") or said("attack mode")):
             myShip.setHardpoints(1)
-        elif speech.said("hide hard points") or speech.said("retract hard points"):
+        elif said("hide hard points") or said("retract hard points"):
             myShip.setHardpoints(0)
 
-        elif speech.said("weapons are selected"):
+        elif said("weapons are selected"):
             myShip.fireGroup = "weapons"
             sayAyAy()
-        elif speech.said("scanners are selected"):
+        elif said("scanners are selected"):
             myShip.fireGroup = "scanners"
             sayAyAy()
-        elif speech.said("switch to weapons"):
+        elif said("switch to weapons"):
             myShip.setFireGroup("weapons")
-        elif speech.said("switch to scanners"):
+        elif said("switch to scanners"):
             myShip.setFireGroup("scanners")
 
-        elif speech.said("scoop is open"):
+        elif said("scoop is open"):
             myShip.scoop = 1
             sayAyAy()
-        elif speech.said("scoop is closed"):
+        elif said("scoop is closed"):
             myShip.scoop = 0
             sayAyAy()
-        elif speech.said("open scoop"):
+        elif said("open scoop"):
             myShip.setScoop(1)
-        elif speech.said("close scoop"):
+        elif said("close scoop"):
             myShip.setScoop(0)
 
-        elif speech.said("red alert"):
+        elif said("red alert"):
             myShip.balancePower
             myShip.stepShields
             myShip.stepWeapons
@@ -569,7 +619,7 @@ def voiceCommands():
             myShip.targetHostile()
             wav("Requests_AndShowThemThePain")
             
-        elif speech.said("request docking"):
+        elif said("request docking"):
             myShip.leftPanel()
             myShip.nextPanelTab()
             myShip.nextPanelTab()
@@ -580,8 +630,29 @@ def voiceCommands():
             myShip.prevPanelTab()
             myShip.noPanel()
 
-        elif speech.said("no panel"):
+        elif said("no panel"):
             myShip.noPanel()
+
+        elif said("silent running"):
+            myShip.toggleSilentRunning()
+        elif said("silent running on"):
+            myShip.setSilentRunning(1)
+        elif said("silent running off"):
+            myShip.setSilentRunning(0)
+        elif said("request docking"):
+            myShip.requestDock()
+        elif said("deploy heat sink"):
+            myShip.deployHeatSink()
+        elif said("target wingman one"):
+            myShip.targetWingman1()
+        elif said("target wingman two"):
+            myShip.targetWingman2()
+        elif said("target wingman three"):
+            myShip.targetWingman3()
+        elif said("target wingmans target"):
+            myShip.targetWingmanTarget()
+        elif said("engage wingman nav lock"):
+            myShip.engageWingmanNavLock()
 
 def androidHeadTracking():
     #Apply deadband filter to avoid drift
