@@ -50,7 +50,7 @@ def KeyRepeat(key, times):
         wait(0.1)
 
 def said(what):
-    speech.said(what,0.7)
+    return speech.said(what)
 
 # ***********************************
 # your ship
