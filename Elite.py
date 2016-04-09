@@ -324,10 +324,12 @@ class Ship:
         wav("FlightMisc_EngagingBoost")
 
     def supercruise(self):
+        self.setHardpoints(0)
         KeyPress(Key.Comma)
         wav("FlightMisc_ActivatingSupercruise")
 
     def hyperspace(self):
+        self.setHardpoints(0)
         KeyPress(Key.Period)
         wav("FlightMisc_PreparingForHyperspaceTravel")
 
@@ -394,20 +396,25 @@ class Ship:
         KeyRepeat(Key.LeftArrow, 5)
         wav("KICS_AdjustingPower")
 
+    def balanceEnginesShields(self):
+        KeyPress(Key.DownArrow)
+        KeyRepeat(Key.UpArrow, 2)
+        KeyRepeat(Key.LeftArrow, 5)
+        
     def zoomIn(self):
-        KeyPress(Key.PageUp)
+        KeyPress(Key.PageDown)
         wav("Misc_IncreasingSensorRange")
 
     def zoomOut(self):
-        KeyPress(Key.PageDown)
+        KeyPress(Key.PageUp)
         wav("Misc_DecreasingSensorRange")
 
     def maxRange(self):
-        KeyRepeat(Key.PageUp, 8)
+        KeyRepeat(Key.PageDown, 8)
         wav("Misc_MaximisingSensorRange")
 
     def minRange(self):
-        KeyRepeat(Key.PageDown, 8)
+        KeyRepeat(Key.PageUp, 8)
         wav("Misc_MinimisingSensorRange")
 
     def galaxyMap(self):
@@ -627,14 +634,20 @@ def voiceCommands():
             myShip.setScoop(0)
 
         elif said("red alert"):
-            myShip.balancePower
-            myShip.stepShields
-            myShip.stepWeapons
+            myShip.balancePower()
+            myShip.stepShields()
+            myShip.stepWeapons()
             myShip.setHardpoints(1)
             myShip.setFireGroup("weapons")
             myShip.targetHostile()
             wav("Requests_AndShowThemThePain")
-            
+
+        elif said("retreat retreat") or said("get me out of here"):
+            myShip.balanceEnginesShields()
+            myShip.ahead100()
+            myShip.boost()
+            myShip.supercruise()
+			
         elif said("request docking"):
             myShip.leftPanel()
             myShip.nextPanelTab()
