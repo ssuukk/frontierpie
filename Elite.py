@@ -61,7 +61,8 @@ class Ship:
     lights = 0
     # my config uses two fire groups, one for weapons, another for scanners
     # this way you can command your ship to either change to wepons or scanners
-    fireGroup = "weapons"
+    fireGroups = ["weapons","scanners","shields"]
+    fireGroupNo = 0
     scoop = 0
     hardpoints = 0
     panel = "none"
@@ -71,7 +72,7 @@ class Ship:
         diagnostics.debug("==============================")
         diagnostics.debug("gear %d" % self.gear)
         diagnostics.debug("ligh %d" % self.lights)
-        diagnostics.debug("fire %s" % self.fireGroup)
+        diagnostics.debug("fire %s" % self.fireGroups[self.fireGroupNo])
         diagnostics.debug("scoo %d" % self.scoop)
         diagnostics.debug("hard %d" % self.hardpoints)
         diagnostics.debug("pane %s" % self.panel)
@@ -223,15 +224,25 @@ class Ship:
         self.dump()
 
     def setFireGroup(self, state):
-        if (self.fireGroup != state):
+        if (self.fireGroups[self.fireGroupNo] != state):
             if (state == "weapons"):
                 wav("KICS_Weapons")
-                KeyPress(Key.B)
-            else:
+            elif (state == "scanners"):
                 wav("Driving_ActivatingDataLinkScanner")
-                KeyPress(Key.N)
-            self.fireGroup = state
+            self.switchToGroup(state)
         self.dump()
+
+    def switchToGroup(self,name):
+        targetFg = self.fireGroups.index(name)
+
+        while self.fireGroupNo<targetFg:
+            KeyPress(Key.N)
+            self.fireGroupNo=self.fireGroupNo+1
+
+        while self.fireGroupNo>targetFg:
+            KeyPress(Key.B)
+            self.fireGroupNo=self.fireGroupNo-1
+
 
     def toggleScoop(self):
         if (self.scoop == 0):
@@ -589,15 +600,20 @@ def voiceCommands():
             myShip.setHardpoints(0)
 
         elif said("weapons are selected"):
-            myShip.fireGroup = "weapons"
+            myShip.fireGroupNo = myShip.fireGroups.index("weapons")
             sayAyAy()
         elif said("scanners are selected"):
-            myShip.fireGroup = "scanners"
+            myShip.fireGroupNo = myShip.fireGroups.index("scanners")
+            sayAyAy()
+        elif said("shields are selected"):
+            myShip.fireGroupNo = myShip.fireGroups.index("shields")
             sayAyAy()
         elif said("switch to weapons"):
             myShip.setFireGroup("weapons")
         elif said("switch to scanners"):
             myShip.setFireGroup("scanners")
+        elif said("switch to shields"):
+            myShip.setFireGroup("shields")
 
         elif said("scoop is open"):
             myShip.scoop = 1
